@@ -22,7 +22,7 @@ public class Run {
     }
 
     public int getDurationSeconds(long endMillis) {
-        return (int)((endMillis - mStartDate.getTime()) / 1000);
+          return (int)((endMillis - mStartDate.getTime()) / 1000);
     }
 
     public static String formatDuration(int durationSeconds){
