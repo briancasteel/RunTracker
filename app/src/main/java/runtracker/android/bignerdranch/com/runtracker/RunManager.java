@@ -128,4 +128,8 @@ public class RunManager {
             Log.e(TAG, "Location received with no tracking run; ignoring.");
         }
     }
+
+    public RunDatabaseHelper.RunCursor queryRuns() {
+        return mHelper.queryRuns();
+    }
 }
