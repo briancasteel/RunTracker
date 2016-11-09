@@ -20,6 +20,8 @@ import android.widget.Toast;
  */
 
 public class RunFragment extends Fragment {
+    private static final String TAG = "RunFragment";
+    private static final String ARG_RUN_ID = "RUN_ID";
 
     private BroadcastReceiver mLocationReceiver = new LocationReceiver() {
         @Override
@@ -28,6 +30,14 @@ public class RunFragment extends Fragment {
             mLastLocation.setTime(System.currentTimeMillis());
             if (isVisible())
                 updateUI();;
+        }
+
+        public static RunFragment newInstance(long runId) {
+            Bundle args = new Bundle();
+            args.putLong(ARG_RUN_ID, runId);
+            RunFragment rf = new RunFragment();
+            rf.setArguments(args);
+            return rf;
         }
 
         @Override
