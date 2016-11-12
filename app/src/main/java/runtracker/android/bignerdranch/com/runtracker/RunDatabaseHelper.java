@@ -99,4 +99,48 @@ public class RunDatabaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_RUN_START_DATE, run.getStartDate().getTime());
         return getWritableDatabase().insert(TABLE_RUN, null, cv);
     }
+
+    public RunCursor queryRun(long id) {
+        Cursor wrapped = getReadableDatabase().query(TABLE_RUN,
+                null, // All columns
+                COLUMN_RUN_ID + " = ?", // Look for a run ID
+                new String[]{ String.valueOf(id)}, // with this value
+                null, // groupd by
+                null, // order by
+                null, // having
+                "1"); // limit one row
+        return new RunCursor(wrapped);
+    }
+
+    public static class LocationCursor extends CursorWrapper {
+        public LocationCursor(Cursor c){
+            super(c);
+        }
+
+        public Location getLocation() {
+            if (isBeforeFirst() || isAfterLast())
+                return null;
+            // First get the provider out so you can use the constructor
+            String provider = getString(getColumnIndex(COLUMN_LOCATION_PROVIDER));
+            Location loc = new Location(provider);
+            // Populate the remaining properties
+            loc.setLatitude(getDouble(getColumnIndex(COLUMN_LOCATION_LATITUDE)));
+            loc.setLongitude(getDouble(getColumnIndex(COLUMN_LOCATION_LONGITUDE)));
+            loc.setAltitude((getDouble(getColumnIndex(COLUMN_LOCATION_ALTITUDE))));
+            loc.setTime(getLong(getColumnIndex(COLUNN_LOCATION_TIMESTAMP)));
+            return loc;
+        }
+    }
+
+    public LocationCursor queryLastLocationForRun(long runId) {
+        Cursor wrapped = getReadableDatabase().query(TABLE_LOCATION,
+                null, // All columns
+                COLUMN_LOCATION_RUN_ID + " = ?", // limit ot the given run
+                new String[]{ String.valueOf(runId) },
+                null, // group by
+                null, // having
+                COLUNN_LOCATION_TIMESTAMP + " desc", // order by latest first
+                "1"); // limit one
+        return new LocationCursor(wrapped);
+    }
 }
