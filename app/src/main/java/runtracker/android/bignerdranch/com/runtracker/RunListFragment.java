@@ -55,6 +55,7 @@ public class RunListFragment extends ListFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
         inflater.inflate(R.menu.run_list_options, menu);
     }
 
@@ -68,6 +69,12 @@ public class RunListFragment extends ListFragment {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
@@ -91,7 +98,8 @@ public class RunListFragment extends ListFragment {
             // Uxe a layout inflater to get a row view
             LayoutInflater inflater = (LayoutInflater)context.getSystemService(
                     Context.LAYOUT_INFLATER_SERVICE);
-            return inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
+            View view = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
+            return(view);
         }
 
         @Override
